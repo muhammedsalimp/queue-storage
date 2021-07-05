@@ -1,6 +1,5 @@
 ﻿using Azure.Storage.Queues;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using System;
 
 namespace MessageSender.Services
@@ -8,12 +7,10 @@ namespace MessageSender.Services
     public class QueueService : IQueueService
     {
         private readonly IConfiguration _configuration;
-        private ILogger _log;
 
-        public QueueService(IConfiguration configuration, ILogger<QueueService> log)
+        public QueueService(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this._log = log;
         }
 
         public void SendMessage(string queueName, string message)
@@ -32,8 +29,6 @@ namespace MessageSender.Services
                 // Send a message to the queue
                 queueClient.SendMessage(message);
             }
-
-            _log.LogInformation($"Inserted: {message}");
         }
     }
 }
